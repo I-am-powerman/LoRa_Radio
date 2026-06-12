@@ -1,6 +1,7 @@
 import work_network 
 from web import run_web
 from light import flicker_light
+import lora_work
 import asyncio
 
 
@@ -16,7 +17,7 @@ async def connect_wifi():
 
 async def main():
     asyncio.create_task(connect_wifi())
-    
+    asyncio.create_task(lora_work.lora_listen_mes())
     print('Запускаем сервер...')
     await run_web()
 

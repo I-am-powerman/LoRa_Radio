@@ -1,8 +1,8 @@
 import asyncio
 import json
+from state import messages
+from lora_work import lora_send_mes
 
-# Временное хранилище сообщений
-messages = []
 
 def handle_request(request_text):
     """Разобрать запрос и вернуть ответ"""
@@ -40,6 +40,7 @@ def handle_request(request_text):
             'time':   data.get('time', '--:--')
         }
         messages.append(msg)
+        lora_send_mes(msg['text'])
         print('Новое сообщение:', msg['text'])
         return b'HTTP/1.1 200 OK\r\n\r\nok'
 
