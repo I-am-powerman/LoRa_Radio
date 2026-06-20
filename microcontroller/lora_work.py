@@ -3,14 +3,25 @@ from lib.ulora.core import ULoRa
 from state import messages
 import asyncio
 
+# Пины для ESP32-S3 Zero
 spi = SPI(1, baudrate=5_000_000, polarity=0, phase=0,
           sck=Pin(12), mosi=Pin(11), miso=Pin(13))
           
 pins = {
     "ss": 10, 
-    "reset": 14, 
-    "dio0": 15 
+    "reset": 8, 
+    "dio0": 9 
 }
+
+# Пины для raspberry pi pico w
+# spi = SPI(1, baudrate=5_000_000, polarity=0, phase=0,
+#           sck=Pin(24), mosi=Pin(25), miso=Pin(21))
+          
+# pins = {
+#     "ss": 22, 
+#     "reset": 27, 
+#     "dio0": 26 
+# }
 
 lora = ULoRa(spi, pins, freq=433E6)
 
