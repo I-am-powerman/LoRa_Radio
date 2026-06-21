@@ -1,7 +1,7 @@
 import asyncio
 import json
-from state import messages
-from lora_work import lora_send_mes
+import state 
+from lora_work import outbox
 
 
 def handle_request(request_text):
@@ -24,7 +24,7 @@ def handle_request(request_text):
 
     # --- GET /messages → список сообщений ---
     if method == 'GET' and path == '/messages':
-        body      = json.dumps(messages)
+        body      = json.dumps(state.messages)
         response  = 'HTTP/1.1 200 OK\r\n'
         response += 'Content-Type: application/json\r\n\r\n'
         response += body
@@ -39,9 +39,16 @@ def handle_request(request_text):
             'sender': 'me',
             'time':   data.get('time', '--:--')
         }
-        messages.append(msg)
-        lora_send_mes(msg['text'])
+        state.messages.append(msg)
+        outbox.append(msg['text'])
         print('Новое сообщение:', msg['text'])
+        return b'HTTP/1.1 200 OK\r\n\r\nok'
+
+    # --- POST /mode → изменить режим ON/OFF ---
+    if method == 'POST' and path == '/mode':
+        body = request_text.split('\r\n\r\n')[1]
+        data = json.loads(body)
+        state.is_listening = data['listening']
         return b'HTTP/1.1 200 OK\r\n\r\nok'
 
     return b'HTTP/1.1 404 Not Found\r\n\r\nNot found'

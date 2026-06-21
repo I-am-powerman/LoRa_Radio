@@ -11,7 +11,8 @@ def run_network(
     ap.config(
         essid = essid,
         password = password,
-        authmode = network.AUTH_WPA2_PSK 
+        # убрать этот параметр на Pico W
+        authmode = network.AUTH_WPA2_PSK   
     )
 
     ap.active(True)
