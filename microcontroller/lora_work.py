@@ -38,7 +38,7 @@ async def lora_loop():
 
 
             # 2. Слушаем
-            raw = lora.listen() # работает без timeout
+            raw = lora.listen() + '\n' + lora.packet_rssi() # работает без timeout
             if raw:
                 state.messages.append({
                     'text': raw,
